@@ -20,7 +20,7 @@ using task_t = std::function<void()>;
 using namespace ThreadPoolMould;
 using namespace LoggerMould;
 
-class TcpServer // 即创建一个UDP网络服务
+class TcpServer // 即创建一个TCP网络服务
 {
     enum // 既然不指定类域 在这个文件里用来全局使用 就没必要进行枚举空间命名了
     {

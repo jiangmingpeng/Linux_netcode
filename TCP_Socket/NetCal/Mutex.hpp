@@ -1,0 +1,53 @@
+#pragma once
+#include <iostream>
+#include <pthread.h>
+
+
+
+class MutexMould
+{
+public:
+    MutexMould()
+    {
+        pthread_mutex_init(&_mutex,nullptr);
+    }
+
+    void Lock()
+    {
+        (pthread_mutex_lock(&_mutex));
+    } 
+    void UnLock()
+    {
+        (pthread_mutex_unlock(&_mutex));
+    }
+    pthread_mutex_t *Ptr() // 供 Cond::Wait 使用，暴露底层互斥量
+    {
+        return &_mutex;
+    }
+    ~MutexMould()
+    {
+        pthread_mutex_destroy(&_mutex);
+    }
+private:
+
+    pthread_mutex_t _mutex;//先进行全局的这种封装看看
+
+};
+
+
+//RAII内存管理写法
+
+class MutexGuard
+{
+public:
+    MutexGuard(MutexMould& lock):_lockguard(lock)
+    {
+        _lockguard.Lock();
+    }
+    ~MutexGuard()
+    {
+        _lockguard.UnLock();
+    }
+private:
+    MutexMould& _lockguard;//因为是类用引用开销会小很多
+};

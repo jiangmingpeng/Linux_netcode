@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>接入节点 // NEXUS</title>
+    <style>
+        /* CSS 基础配置与上同 */
+        :root {
+            --bg-color: #050810; --cyan: #00f3ff; --purple: #9d4edd; --text-normal: #a0a5b0; --text-highlight: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.02); --card-border: rgba(0, 243, 255, 0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Courier New', Courier, monospace; }
+        body {
+            background-color: var(--bg-color); color: var(--text-normal); min-height: 100vh;
+            background-image: linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px; display: flex; flex-direction: column; align-items: center; padding-top: 40px; padding-bottom: 50px;
+        }
+        body::after { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.15) 50%); background-size: 100% 4px; pointer-events: none; z-index: 999; }
+        
+        .tech-nav { display: flex; gap: 40px; margin-bottom: 50px; padding: 15px 40px; background: rgba(5, 8, 16, 0.9); border: 1px solid rgba(0, 243, 255, 0.1); border-radius: 4px; backdrop-filter: blur(10px); z-index: 10; }
+        .nav-item { position: relative; text-decoration: none; color: var(--text-normal); font-size: 16px; letter-spacing: 2px; transition: 0.3s; }
+        .nav-item:hover, .nav-item.active { color: var(--text-highlight); }
+        .nav-item::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 20px; height: 3px; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); transform: scaleX(0); transform-origin: left; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .nav-item:hover::after, .nav-item.active::after { transform: scaleX(1); }
+
+        .container { width: 100%; max-width: 1000px; padding: 0 20px; }
+        .header-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+        .section-title { font-size: 20px; color: var(--cyan); display: flex; align-items: center; gap: 10px; }
+        .section-title::before { content: '///'; color: var(--purple); }
+        
+        /* 扫描按钮 */
+        .btn-scan {
+            background: transparent; border: 1px solid var(--cyan); color: var(--cyan);
+            padding: 8px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; letter-spacing: 1px; transition: 0.3s;
+        }
+        .btn-scan:hover { background: rgba(0, 243, 255, 0.1); box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
+        .btn-scan:active { transform: scale(0.95); }
+
+        .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; backdrop-filter: blur(5px); overflow: hidden; }
+        
+        /* 节点列表表格 */
+        .node-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .node-table th { padding: 15px 20px; background: rgba(0, 243, 255, 0.05); color: var(--cyan); font-size: 13px; border-bottom: 1px solid var(--card-border); letter-spacing: 1px; }
+        .node-table td { padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; transition: background 0.2s; }
+        .node-table tr:hover td { background: rgba(0, 243, 255, 0.03); }
+
+        /* 状态灯 */
+        .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; }
+        .st-online { background: #00ff66; box-shadow: 0 0 10px #00ff66; }
+        .st-busy { background: #ffcc00; box-shadow: 0 0 10px #ffcc00; }
+        .st-offline { background: #ff0055; box-shadow: 0 0 10px #ff0055; }
+
+        .node-name { color: #fff; font-weight: bold; }
+        .node-ip { color: #666; font-size: 12px; font-family: monospace; }
+        
+        /* 延迟标签 */
+        .tag { padding: 4px 10px; border-radius: 4px; font-size: 13px; background: rgba(0, 243, 255, 0.1); color: var(--cyan); }
+        .tag.busy { background: rgba(255, 204, 0, 0.1); color: #ffcc00; }
+        .tag.offline { background: rgba(255, 0, 85, 0.1); color: #ff0055; }
+    </style>
+</head>
+<body>
+    <nav class="tech-nav">
+        <a href="architecture.html" class="nav-item">技术架构</a>
+        <a href="matrix.html" class="nav-item">核心矩阵</a>
+        <a href="nodes.html" class="nav-item active">接入节点</a>
+    </nav>
+
+    <div class="container">
+        <div class="header-row">
+            <h2 class="section-title">全球网络接入节点</h2>
+            <button class="btn-scan" onclick="scanNodes()" id="scanBtn">重新扫描延迟</button>
+        </div>
+
+        <div class="card">
+            <table class="node-table">
+                <thead>
+                    <tr>
+                        <th>状态</th>
+                        <th>节点名称 / 所在区域</th>
+                        <th>IP 地址</th>
+                        <th>当前负载</th>
+                        <th>延迟 (Ping)</th>
+                    </tr>
+                </thead>
+                <tbody id="node-list">
+                    <!-- 数据由 JS 动态生成 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // 节点基础数据
+        const nodesData = [
+            { id: 'SH-01', name: 'Shanghai-Core', region: '华东 · 上海', ip: '106.15.88.152', status: 'online', load: 75 },
+            { id: 'BJ-02', name: 'Beijing-Relay', region: '华北 · 北京', ip: '47.93.112.45', status: 'online', load: 45 },
+            { id: 'GZ-03', name: 'Guangzhou-Edge', region: '华南 · 广州', ip: '120.76.2.11', status: 'online', load: 88 },
+            { id: 'HK-04', name: 'HongKong-BGP', region: '亚太 · 香港', ip: '103.10.4.99', status: 'busy', load: 95 },
+            { id: 'TY-05', name: 'Tokyo-Edge', region: '亚太 · 东京', ip: '133.242.1.99', status: 'online', load: 30 },
+            { id: 'SG-06', name: 'Singapore-GW', region: '亚太 · 新加坡', ip: '128.199.100.2', status: 'online', load: 52 },
+            { id: 'FR-07', name: 'Frankfurt-Relay', region: '欧洲 · 法兰克福', ip: '85.10.200.11', status: 'busy', load: 80 },
+            { id: 'SV-08', name: 'SiliconValley', region: '北美 · 圣何塞', ip: '104.28.0.1', status: 'offline', load: 0 }
+        ];
+
+        const tbody = document.getElementById('node-list');
+
+        // 渲染表格
+        function renderTable() {
+            tbody.innerHTML = '';
+            nodesData.forEach(node => {
+                let statusClass = '';
+                let statusText = '';
+                let latency = '';
+                
+                if (node.status === 'online') {
+                    statusClass = 'st-online'; statusText = '在线';
+                    latency = `<span class="tag">${Math.floor(Math.random() * 40 + 10)} ms</span>`;
+                } else if (node.status === 'busy') {
+                    statusClass = 'st-busy'; statusText = '拥塞';
+                    latency = `<span class="tag busy">${Math.floor(Math.random() * 100 + 150)} ms</span>`;
+                } else {
+                    statusClass = 'st-offline'; statusText = '离线';
+                    latency = `<span class="tag offline">TIMEOUT</span>`;
+                }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span class="status-dot ${statusClass}"></span>${statusText}</td>
+                    <td>
+                        <div class="node-name">${node.name} (${node.id})</div>
+                        <div style="font-size: 12px; color: #888;">${node.region}</div>
+                    </td>
+                    <td class="node-ip">${node.ip}</td>
+                    <td>
+                        <div style="font-size: 12px; margin-bottom: 4px;">${node.load}%</div>
+                        <div style="width: 100px; height: 4px; background: #222; border-radius: 2px;">
+                            <div style="height: 100%; width: ${node.load}%; background: ${node.status === 'offline' ? '#555' : (node.load > 80 ? '#ffcc00' : '#00f3ff')}; border-radius: 2px;"></div>
+                        </div>
+                    </td>
+                    <td>${latency}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 扫描交互
+        function scanNodes() {
+            const btn = document.getElementById('scanBtn');
+            btn.innerText = '正在探测...';
+            btn.style.color = '#ffcc00';
+            btn.style.borderColor = '#ffcc00';
+            btn.disabled = true;
+
+            // 模拟网络请求延迟
+            setTimeout(() => {
+                renderTable(); // 重新渲染，内部会随机生成新的延迟
+                btn.innerText = '重新扫描延迟';
+                btn.style.color = 'var(--cyan)';
+                btn.style.borderColor = 'var(--cyan)';
+                btn.disabled = false;
+            }, 800);
+        }
+
+        // 初始化渲染
+        renderTable();
+    </script>
+</body>
+</html>

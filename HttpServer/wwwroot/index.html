@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS // 科技前沿</title>
+    <style>
+        :root {
+            --primary-color: #00f3ff;
+            --secondary-color: #9d4edd;
+            --bg-color: #050510;
+            --text-main: #e0e0e0;
+            --text-muted: #8a8a9d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Courier New', monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            cursor: crosshair;
+            /* 全局十字准星光标，增强科技感 */
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(5, 5, 16, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--primary-color);
+            margin-right: 8px;
+        }
+
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: 0.3s;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+            text-shadow: 0 0 8px var(--primary-color);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            padding: 0 20px;
+            margin-top: 60px;
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            font-weight: 800;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        /* 按钮 - 增加靠近发光特效 */
+        .btn {
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--primary-color);
+            background: transparent;
+            border: 1px solid var(--primary-color);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2) inset;
+            animation: fadeIn 2s ease-out;
+            outline: none;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover,
+        .btn.active {
+            background: rgba(0, 243, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.5) inset, 0 0 30px rgba(0, 243, 255, 0.3);
+            color: #fff;
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        /* 玻璃拟态卡片区 */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            margin-top: -100px;
+            padding: 0 20px;
+            z-index: 10;
+            perspective: 1000px;
+            /* 开启3D透视 */
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 10px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            /* 保持3D空间 */
+            transition: transform 0.1s ease, border-color 0.3s, box-shadow 0.3s;
+            /* 使用 CSS 变量记录鼠标位置 */
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+        }
+
+        /* 卡片内部聚光灯 (伪元素实现) */
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y),
+                    rgba(0, 243, 255, 0.15),
+                    transparent 40%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .card:hover {
+            border-color: rgba(0, 243, 255, 0.6);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 243, 255, 0.1);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        /* 保证卡片内容在聚光灯上方 */
+        .card-content {
+            position: relative;
+            z-index: 2;
+            transform: translateZ(30px);
+            /* 让内容浮起来 */
+        }
+
+        .card-icon {
+            font-size: 30px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+                margin-top: 20px;
+            }
+
+            header {
+                padding: 15px 20px;
+            }
+
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <header>
+        <div class="logo"><span>◆</span> NEXUS</div>
+        <nav>
+            <a href="./index.html">首页</a>
+            <a href="./Struct.html">技术架构</a>
+            <a href="./Core.html">核心矩阵</a>
+            <a href="./Point.html">接入节点</a>
+            <a href="./Login.html">登录</a>
+            <a href="./Register.html">注册</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1 class="hero-title">FUTURE IS NOW</h1>
+        <p class="hero-subtitle">构建下一代去中心化网络协议，突破算力边界，探索未知的数字宇宙。连接你的神经元，开启全新纪元。</p>
+        <button class="btn" id="main-btn">初始化系统连接</button>
+    </main>
+
+    <section class="features">
+        <!-- 加入 card-content 包裹层，方便 3D 景深控制 -->
+        <div class="card">
+            <div class="card-content">
+                <div class="card-icon">⚡</div>
+                <h3>量子级响应</h3>
+                <p>基于边缘计算架构，实现低于 10ms 的超低延迟传输，让数据交互瞬间完成。</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <div class="card-icon">🛡️</div>
+                <h3>绝对防护</h3>
+                <p>采用多层次零信任安全模型，结合 AI 实时监控，保障每一条指令和数据的绝对安全。</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <div class="card-icon">🌐</div>
+                <h3>分布式网络</h3>
+                <p>全球节点动态路由，自动规避拥堵与故障，提供永不宕机的稳定云原生服务。</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <div class="card-icon">🌸</div>
+                <h3>温和访问</h3>
+                <p>减少网络延迟，提高访问效率。</p>
+            </div>
+        </div>
+        <h2>Norwegian Mountain Trip</h2>
+        <img border="0" src="https://ts3.tc.mm.bing.net/th/id/OIP-C.m0aeU1X2Y3bQ47ZjGPX_IwHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Pulpit rock" width="304" height="228">
+
+    </section>
+    /wwwroot/pictures/sl.jpg
+
+    <script>
+        // ================= Canvas 粒子系统升级 =================
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        const mouse = { x: null, y: null, radius: 180 }; // 扩大感应半径
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        // 鼠标离开窗口时清除坐标
+        window.addEventListener('mouseout', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+                this.size = Math.random() * 2 + 1;
+                this.baseColor = 'rgba(0, 243, 255, 0.7)';
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                // 鼠标排斥逻辑
+                if (mouse.x != null && mouse.y != null) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < mouse.radius) {
+                        let forceDirectionX = dx / distance;
+                        let forceDirectionY = dy / distance;
+                        let force = (mouse.radius - distance) / mouse.radius;
+                        // 靠近鼠标时，粒子被推开的力度更大
+                        this.x -= forceDirectionX * force * 8;
+                        this.y -= forceDirectionY * force * 8;
+                    }
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.baseColor;
+                ctx.fill();
+            }
+        }
+
+        const particles = Array.from({ length: 120 }, () => new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            // 1. 绘制鼠标中心的能量场（光晕）
+            if (mouse.x != null && mouse.y != null) {
+                ctx.beginPath();
+                ctx.arc(mouse.x, mouse.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = '#fff';
+                ctx.fill();
+
+                // 画一个脉动光环
+                let time = Date.now() / 500;
+                let pulseRadius = 20 + Math.sin(time) * 10;
+                ctx.beginPath();
+                ctx.arc(mouse.x, mouse.y, pulseRadius, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(157, 78, 221, 0.5)'; // 使用紫色光环
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+
+            // 2. 绘制粒子与连线
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                // 粒子之间的连线
+                for (let j = i; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 120) {
+                        ctx.beginPath();
+                        let opacity = 1 - (distance / 120);
+                        ctx.strokeStyle = `rgba(0, 243, 255, ${opacity * 0.4})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+
+                // 新增：鼠标与粒子的连线（类似雷达拉扯）
+                if (mouse.x != null && mouse.y != null) {
+                    let dx = particles[i].x - mouse.x;
+                    let dy = particles[i].y - mouse.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < mouse.radius) {
+                        ctx.beginPath();
+                        let opacity = 1 - (distance / mouse.radius);
+                        // 连线颜色变为紫色，增强视觉冲击
+                        ctx.strokeStyle = `rgba(157, 78, 221, ${opacity * 0.6})`;
+                        ctx.lineWidth = 1.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+
+        // ================= 卡片 3D 追踪与聚光灯特效 =================
+        const cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                // 计算鼠标在卡片内的相对坐标 (用于聚光灯)
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // 更新 CSS 变量，控制伪元素的聚光灯位置
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+
+                // 计算 3D 倾斜角度
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                // 除以中心点距离得到 -1 到 1 的比例，乘以最大倾斜角度
+                const rotateX = ((y - centerY) / centerY) * -10;
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            // 鼠标离开时复位
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+
+        // ================= 按钮“量子靠近”特效 =================
+        // 通过计算鼠标与按钮中心的距离，动态增加阴影和发光
+        const btn = document.getElementById('main-btn');
+
+        window.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const btnCenterX = rect.left + rect.width / 2;
+            const btnCenterY = rect.top + rect.height / 2;
+
+            // 计算鼠标到按钮中心的距离
+            const dx = e.clientX - btnCenterX;
+            const dy = e.clientY - btnCenterY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // 如果在 150px 范围内
+            if (distance < 150) {
+                btn.classList.add('active');
+                // 根据距离动态调整光晕强度
+                const intensity = (150 - distance) / 150;
+                btn.style.boxShadow = `0 0 15px rgba(0, 243, 255, ${0.2 + intensity * 0.5}) inset, 0 0 30px rgba(0, 243, 255, ${intensity * 0.4})`;
+            } else {
+                btn.classList.remove('active');
+                btn.style.boxShadow = ''; // 恢复默认
+            }
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 // 节点失联</title>
+    <style>
+        :root {
+            --bg-color: #050510;
+            --cyan: #00f3ff;
+            --magenta: #ff00ea;
+            --text-color: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Courier New', Courier, monospace; /* 等宽字体增强黑客感 */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 背景透视网格 */
+        .grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            perspective: 500px;
+            z-index: -1;
+            animation: gridMove 10s linear infinite;
+        }
+
+        /* 网格移动动画 */
+        @keyframes gridMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 40px; }
+        }
+
+        /* 扫描线效果 */
+        .scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0, 243, 255, 0.1) 50%,
+                rgba(0, 243, 255, 0.1)
+            );
+            background-size: 100% 4px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* 故障艺术核心样式 */
+        .glitch-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .glitch {
+            font-size: 12rem;
+            font-weight: 900;
+            line-height: 1;
+            position: relative;
+            color: #fff;
+            letter-spacing: 10px;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        }
+
+        /* 利用伪元素制造红蓝错位 */
+        .glitch::before, .glitch::after {
+            content: "404";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+        }
+
+        .glitch::before {
+            left: 4px;
+            text-shadow: -4px 0 var(--magenta);
+            clip-path: inset(24px 0 56px 0);
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            left: -4px;
+            text-shadow: -4px 0 var(--cyan);
+            clip-path: inset(54px 0 22px 0);
+            animation: glitch-anim-2 2.5s infinite linear alternate-reverse;
+        }
+
+        /* 故障切片动画 */
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 60% 0); transform: translate(-2px, 2px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -2px); }
+            40% { clip-path: inset(40% 0 40% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+            80% { clip-path: inset(10% 0 80% 0); transform: translate(-2px, 2px); }
+            100% { clip-path: inset(50% 0 30% 0); transform: translate(2px, -2px); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 70% 0); transform: translate(2px, -2px); }
+            20% { clip-path: inset(50% 0 20% 0); transform: translate(-2px, 2px); }
+            40% { clip-path: inset(30% 0 50% 0); transform: translate(2px, -2px); }
+            60% { clip-path: inset(70% 0 10% 0); transform: translate(-2px, 2px); }
+            80% { clip-path: inset(20% 0 60% 0); transform: translate(2px, -2px); }
+            100% { clip-path: inset(40% 0 40% 0); transform: translate(-2px, 2px); }
+        }
+
+        /* 文本区域 */
+        .error-title {
+            font-size: 1.5rem;
+            color: var(--magenta);
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--magenta);
+        }
+
+        /* 终端打字机效果容器 */
+        .terminal-text {
+            font-size: 1.1rem;
+            color: var(--cyan);
+            background: rgba(0, 243, 255, 0.05);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            padding: 15px 30px;
+            border-radius: 4px;
+            margin: 20px auto;
+            max-width: 600px;
+            text-align: left;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.1);
+        }
+
+        .terminal-text::before {
+            content: "> ";
+            color: var(--magenta);
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background-color: var(--cyan);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* 返回按钮 */
+        .btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 40px;
+            font-size: 1.1rem;
+            color: var(--bg-color);
+            background: var(--cyan);
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px var(--cyan);
+            border: 2px solid var(--cyan);
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: var(--cyan);
+            box-shadow: 0 0 30px var(--cyan), inset 0 0 15px var(--cyan);
+            text-shadow: 0 0 5px var(--cyan);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .glitch { font-size: 8rem; }
+            .terminal-text { font-size: 0.9rem; padding: 10px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 背景层 -->
+    <div class="grid-bg"></div>
+    <div class="scanlines"></div>
+
+    <!-- 内容层 -->
+    <div class="container">
+        <div class="glitch-wrapper">
+            <div class="glitch">404</div>
+        </div>
+        
+        <div class="error-title">CONNECTION_LOST</div>
+        
+        <div class="terminal-text">
+            <span id="typewriter"></span><span class="cursor"></span>
+        </div>
+
+        <a href="/" class="btn">初始化返回</a>
+    </div>
+
+    <script>
+        // 终端打字机效果脚本
+        const textToType = "ERR: 无法在当前节点找到目标资源...\n正在尝试重新路由... 失败。\n系统建议：返回安全主页。";
+        const typewriterElement = document.getElementById('typewriter');
+        let index = 0;
+
+        function typeText() {
+            if (index < textToType.length) {
+                // 处理换行符
+                if (textToType.charAt(index) === '\n') {
+                    typewriterElement.innerHTML += '<br>';
+                } else {
+                    typewriterElement.innerHTML += textToType.charAt(index);
+                }
+                index++;
+                // 随机打字速度，模拟真实终端
+                setTimeout(typeText, Math.random() * 50 + 30);
+            }
+        }
+
+        // 页面加载后延迟启动打字机
+        window.onload = () => {
+            setTimeout(typeText, 800);
+        };
+    </script>
+</body>
+</html>

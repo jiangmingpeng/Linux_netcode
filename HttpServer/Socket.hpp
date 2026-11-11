@@ -68,7 +68,7 @@ namespace SOCKETMOULD
     protected:
         void CreateSocketOrDie()
         {
-            // 1.创建网络文件 返回文件描述符
+            // 1.创建网络文件 返回文件描述符----第一次创建套接字这里是放回的监听文件描述符
             _sockfd = socket(AF_INET, SOCK_STREAM, 0);
             if (_sockfd < 0)
             {
@@ -92,7 +92,7 @@ namespace SOCKETMOULD
         void ListenSocketOrDie()
         {
             // 4.tcp是面向连接的 服务端需要处于一直监听的状态进行等待客户端连接
-            int n = listen(_sockfd, gbacklog); // 告诉内核“我在这个端口等连接”
+            int n = listen(_sockfd, gbacklog); // 告诉内核“我在这个端口等连接” 并且规定一共可以有几个连接
             if (n < 0)
             {
                 LOG(LogLevel::FATAL) << "listen fail....!";
@@ -117,7 +117,7 @@ namespace SOCKETMOULD
                 LOG(LogLevel::WARNING) << "accept erro!";
                 return nullptr;
             }
-            LOG(LogLevel::DEBUG) << "accept success, sockfd:" << sockfd;
+            LOG(LogLevel::DEBUG) << "accept success, sockfd:" << sockfd;//由于这里是以多进程为持续获取链接的 所以这里的sockfd是每一个新的网络连接 创建网络文件
             clientaddr = addr;
             return std::make_shared<TcpSocket>(sockfd);
         }

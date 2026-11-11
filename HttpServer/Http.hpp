@@ -13,8 +13,8 @@ const std::string linesep = "\r\n";
 const std::string spacesep = " ";
 const std::string headersep = ": ";
 const std::string g_wwwroot = "wwwroot";
-const std::string g_httpversion = "HTTP/1.1";
-const std::string g_first_page = "index.html";
+const std::string g_httpversion = "HTTP/1.0";
+const std::string g_first_page = "index.html"; //浏览器对web根目录发起请求 这个根目录uri首次显示的页面由提供服务的地方手动设置
 const std::string page_404 = "./wwwroot/404.html";
 const std::string suffixsep = ".";
 const std::string argsep = "?"; // uri和参数的分隔符
@@ -148,12 +148,12 @@ private:
             }
             else
             {
-                std::cout<<"_URI"<<_uri<<std::endl;
+                std::cout<<"_URI :"<<_uri<<std::endl;
                 std::string temp = _uri;
                 _uri = temp.substr(0,pos);
-                std::cout<<"_URI"<<_uri<<std::endl;
+                std::cout<<"_URI :"<<_uri<<std::endl;
                 _text = temp.substr(pos+argsep.size());
-                std::cout<<"_text"<<_text<<std::endl;
+                std::cout<<"_text :"<<_text<<std::endl;
             }
         }
         else
@@ -215,7 +215,7 @@ public:
     {
         return _uri;
     }
-    std::string RequestContent()
+    std::string RequestContent()//读的文件就是在该工作目录下自己指定的一些文件 可以是 图片 视频 音乐 前端等其他东西
     {
         std::string path = _uri;          // wwwroot/Login  |  wwwroot/index.html
         if (_suffix.empty())              // 没有后缀 → 按原来的行为补 .html
@@ -448,7 +448,7 @@ public:
     }
 
 public:
-    std::string HanlderHttpRequest(std::string &req) // 这个参数是请求的原始字符串型式
+    std::string HanlderHttpRequest(std::string &req) // 这个参数是请求的原始字符串型式  ---这个内容是inbuff里传来的 其实就是从网络里拿到的http请求 放到这里来做解析
     {
 
 #ifndef DEBUG // 条件编译可以熟悉一下 感受一下条件编译的好处 在这里知道有这个功能就可以 不必要在这里再次模仿浪费时间
@@ -463,7 +463,7 @@ public:
         }
         else // 静态
         {
-            std::string content = http_req.RequestContent();
+            std::string content = http_req.RequestContent();//就是以二进制文件读来的内容
             if (content.empty())
             {
                 std::string body = Util::ReadFile(page_404); // 需要把常量改成 "./wwwroot/page_404.html"

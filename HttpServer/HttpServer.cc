@@ -28,10 +28,10 @@ void Login(HttpRequest &req, HttpResponse &rep)
     const std::string user = GetArg(req, "user");
     const std::string pass = GetArg(req, "pass");
 
-    const bool ok = (user == "admin" && pass == "123456"); // TODO: 换成你自己的校验
+    const bool ok = (user == "admin" && pass == "123456"); // TODO: 换成自己的校验
 
-    std::string body = ok ? "<h2>登录成功，" + user + "</h2>"
-                          : "<h2>用户名或密码错误</h2>";
+    std::string body = ok ? "<h2>Login seccess !!!" + user + "</h2>"
+                          : "<h2>usr is erro!!!</h2>";
 
     rep.SetCode(ok ? 200 : 403);
     rep.SetBody(body);

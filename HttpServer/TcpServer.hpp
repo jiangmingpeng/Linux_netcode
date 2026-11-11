@@ -28,7 +28,7 @@ public:
     TcpServer(Handler_t handler, uint16_t port = default_port)
         : _port(port), _listensock(std::make_unique<TcpSocket>()), _handler(handler)
     {
-        _listensock->BuildTcpSocketMethod(_port);
+        _listensock->BuildTcpSocketMethod(_port); // 创建TcpServer之后其实就已经有了监听fd
         LOG(LogLevel::INFO) << "create listen socket success: " << _listensock->Sockfd();
     }
     ~TcpServer()
@@ -40,19 +40,30 @@ public:
         signal(SIGCHLD, SIG_IGN);
         while (true)
         {
-            InetAddr clientaddr;
-            auto sockfd = _listensock->Accepter(clientaddr);
+            InetAddr clientaddr;                             // 创建新的用来接收连接的客户信息
+            auto sockfd = _listensock->Accepter(clientaddr); // 得到一个带着新的业务连接fd的类指针
             if (!sockfd)
             {
                 continue;
             }
             LOG(LogLevel::DEBUG) << "get a new link, socket address: " << clientaddr.ToString() << " sockfd: " << sockfd->Sockfd();
 
-            if (fork() == 0)
+            pid_t pid = fork();
+            if (pid == 0)//创建出来的子进程会继承父进程所打开的文件描述符
             {
-                service(sockfd, clientaddr);
+                service(sockfd, clientaddr); // 对这个业务fd进行提供tcp主服务
                 sockfd->Close();
                 exit(0);
+            }
+            else if (pid > 0) // 父进程
+            {
+                // 父进程不需要处理通信，必须立刻关掉业务套接字！
+                sockfd->Close();
+            }
+            else
+            {
+                // fork 失败的处理
+                LOG(LogLevel::ERROR) << "fork error";
             }
         }
     }
@@ -80,7 +91,8 @@ private:
             return;
         }
 
-         LOG(LogLevel::DEBUG) << "recv " << inbuff.size() << " bytes:\n" << inbuff;
+        LOG(LogLevel::DEBUG) << "recv " << inbuff.size() << " bytes:\n"
+                             << inbuff;
 
         if (_handler)
             outbuff += _handler(inbuff);
@@ -91,13 +103,12 @@ private:
         // LOG(LogLevel::DEBUG) << "outbuff:\n"
         //                         << outbuff;
         LOG(LogLevel::DEBUG) << "reply " << outbuff.size() << " bytes";
-        n = sockfd->Send(outbuff);
+        n = sockfd->Send(outbuff); // 把通过上面的handler拿到的内容 最后再发给客户端
         if (n < 0)
         {
             LOG(LogLevel::WARNING) << "send: client quit," << address.ToString();
             return;
         }
-        
     }
 
 private:

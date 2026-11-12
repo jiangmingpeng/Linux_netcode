@@ -1,6 +1,7 @@
 #include "TcpServer.hpp"
 #include "Logger.hpp"
 #include "Http.hpp"
+#include "daemon.hpp"
 #include <iostream>
 #include <memory>
 
@@ -77,8 +78,14 @@ int main(int argc, char *argv[])
         Usage(argv[0]);
         exit(2);
     }
-    ENABLE_CONSOLE_LOG_STRATEGY() // 这里给的是控制台策略
+    ENABLE_FILE_LOG_STRATEGY();
+    // ENABLE_CONSOLE_LOG_STRATEGY();
     uint16_t server_port = std::stoi(argv[1]);
+
+    Daemon(1, 0); 
+    // daemon(0, 0);
+    // LOG -> 文件版日志
+    // printf && cout -> /dev/null
 
     // 定义Http协议
     std::unique_ptr<HttpProtocol> protocol = std::make_unique<HttpProtocol>();

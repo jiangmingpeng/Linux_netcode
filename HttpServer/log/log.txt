@@ -1,0 +1,162 @@
+[2026-11-12 11:22:00.906005] [INFO] [402026] [Socket.hpp] [78] - 套接字创建成功: 3
+[2026-11-12 11:22:00.907273] [INFO] [402026] [Socket.hpp] [90] - 套接字关联成功: 8080
+[2026-11-12 11:22:00.907497] [INFO] [402026] [Socket.hpp] [101] - listen success...!
+[2026-11-12 11:22:00.907614] [INFO] [402026] [TcpServer.hpp] [32] - create listen socket success: 3
+[2026-11-12 11:22:08.666390] [DEBUG] [402026] [Socket.hpp] [120] - accept success, sockfd:4
+[2026-11-12 11:22:08.666537] [DEBUG] [402026] [TcpServer.hpp] [49] - get a new link, socket address: [39.144.193.228:6812] sockfd: 4
+[2026-11-12 11:22:08.667354] [DEBUG] [402026] [Socket.hpp] [120] - accept success, sockfd:4
+[2026-11-12 11:22:08.667600] [DEBUG] [402026] [TcpServer.hpp] [49] - get a new link, socket address: [39.144.193.228:6811] sockfd: 4
+[2026-11-12 11:22:08.712485] [DEBUG] [402054] [TcpServer.hpp] [94] - recv 566 bytes:
+GET / HTTP/1.1
+Host: 106.15.88.152:8080
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6
+Cookie: _tea_utm_cache_10000007=undefined
+
+
+[2026-11-12 11:22:08.712937] [DEBUG] [402054] [TcpServer.hpp] [105] - reply 18215 bytes
+[2026-11-12 11:22:08.907406] [DEBUG] [402055] [TcpServer.hpp] [94] - recv 566 bytes:
+GET / HTTP/1.1
+Host: 106.15.88.152:8080
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6
+Cookie: _tea_utm_cache_10000007=undefined
+
+
+[2026-11-12 11:22:08.907848] [DEBUG] [402055] [TcpServer.hpp] [105] - reply 18215 bytes
+[2026-11-12 11:22:08.927508] [DEBUG] [402026] [Socket.hpp] [120] - accept success, sockfd:4
+[2026-11-12 11:22:08.927624] [DEBUG] [402026] [TcpServer.hpp] [49] - get a new link, socket address: [39.144.193.228:6844] sockfd: 4
+[2026-11-12 11:22:09.142947] [DEBUG] [402056] [TcpServer.hpp] [94] - recv 566 bytes:
+GET / HTTP/1.1
+Host: 106.15.88.152:8080
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6
+Cookie: _tea_utm_cache_10000007=undefined
+
+
+[2026-11-12 11:22:09.143665] [DEBUG] [402056] [TcpServer.hpp] [105] - reply 18215 bytes
+[2026-11-12 11:22:09.166808] [DEBUG] [402026] [Socket.hpp] [120] - accept success, sockfd:4
+[2026-11-12 11:22:09.166921] [DEBUG] [402026] [TcpServer.hpp] [49] - get a new link, socket address: [39.144.193.228:6860] sockfd: 4
+[2026-11-12 11:22:09.287659] [DEBUG] [402058] [TcpServer.hpp] [94] - recv 566 bytes:
+GET / HTTP/1.1
+Host: 106.15.88.152:8080
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6
+Cookie: _tea_utm_cache_10000007=undefined
+
+
+[2026-11-12 11:22:09.288165] [DEBUG] [402058] [TcpServer.hpp] [105] - reply 18215 bytes
+[2026-11-12 11:22:09.762319] [DEBUG] [402026] [Socket.hpp] [120] - accept success, sockfd:4
+[2026-11-12 11:22:09.762460] [DEBUG] [402026] [TcpServer.hpp] [49] - get a new link, socket address: [39.144.193.228:6907] sockfd: 4
+[2026-11-12 11:22:09.792761] [DEBUG] [402059] [TcpServer.hpp] [94] - recv 513 bytes:
+GET /favicon.ico HTTP/1.1
+Host: 106.15.88.152:8080
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0
+Accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8
+Referer: http://106.15.88.152:8080/
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6
+Cookie: _tea_utm_cache_10000007=undefined
+
+
+[2026-11-12 11:22:09.793186] [ERROR] [402059] [Http.hpp] [47] - open file fail: [wwwroot/favicon.ico] len=19
+[2026-11-12 11:22:09.793336] [DEBUG] [402059] [TcpServer.hpp] [105] - reply 8300 bytes
+[2026-11-12 11:23:22.736637] [INFO] [402196] [Socket.hpp] [78] - 套接字创建成功: 3
+[2026-11-12 11:23:22.737485] [INFO] [402196] [Socket.hpp] [90] - 套接字关联成功: 8080
+[2026-11-12 11:23:22.737685] [INFO] [402196] [Socket.hpp] [101] - listen success...!
+[2026-11-12 11:23:22.737783] [INFO] [402196] [TcpServer.hpp] [32] - create listen socket success: 3
+[2026-11-12 11:23:25.147082] [DEBUG] [402196] [Socket.hpp] [120] - accept success, sockfd:4
+[2026-11-12 11:23:25.147313] [DEBUG] [402196] [TcpServer.hpp] [49] - get a new link, socket address: [39.144.193.228:15035] sockfd: 4
+[2026-11-12 11:23:25.148010] [DEBUG] [402210] [TcpServer.hpp] [94] - recv 549 bytes:
+GET / HTTP/1.1
+Host: 106.15.88.152:8080
+Connection: keep-alive
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6
+Cookie: _tea_utm_cache_10000007=undefined
+
+
+[2026-11-12 11:23:25.148449] [DEBUG] [402210] [TcpServer.hpp] [105] - reply 18215 bytes
+[2026-11-12 11:23:25.158009] [DEBUG] [402196] [Socket.hpp] [120] - accept success, sockfd:4
+[2026-11-12 11:23:25.158132] [DEBUG] [402196] [TcpServer.hpp] [49] - get a new link, socket address: [39.144.193.228:15034] sockfd: 4
+[2026-11-12 11:23:26.28700] [DEBUG] [402211] [TcpServer.hpp] [94] - recv 513 bytes:
+GET /favicon.ico HTTP/1.1
+Host: 106.15.88.152:8080
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0
+Accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8
+Referer: http://106.15.88.152:8080/
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6
+Cookie: _tea_utm_cache_10000007=undefined
+
+
+[2026-11-12 11:23:26.29023] [ERROR] [402211] [Http.hpp] [47] - open file fail: [wwwroot/favicon.ico] len=19
+[2026-11-12 11:23:26.29418] [DEBUG] [402211] [TcpServer.hpp] [105] - reply 8300 bytes
+[2026-11-12 11:27:35.686360] [INFO] [402367] [Socket.hpp] [78] - 套接字创建成功: 3
+[2026-11-12 11:27:35.687534] [INFO] [402367] [Socket.hpp] [90] - 套接字关联成功: 8080
+[2026-11-12 11:27:35.687735] [INFO] [402367] [Socket.hpp] [101] - listen success...!
+[2026-11-12 11:27:35.687767] [INFO] [402367] [TcpServer.hpp] [32] - create listen socket success: 3
+[2026-11-12 11:29:04.133462] [INFO] [402476] [Socket.hpp] [78] - 套接字创建成功: 3
+[2026-11-12 11:29:04.135713] [INFO] [402476] [Socket.hpp] [90] - 套接字关联成功: 8080
+[2026-11-12 11:29:04.135857] [INFO] [402476] [Socket.hpp] [101] - listen success...!
+[2026-11-12 11:29:04.135943] [INFO] [402476] [TcpServer.hpp] [32] - create listen socket success: 3
+[2026-11-12 11:29:34.291037] [DEBUG] [402476] [Socket.hpp] [120] - accept success, sockfd:4
+[2026-11-12 11:29:34.291474] [DEBUG] [402476] [TcpServer.hpp] [49] - get a new link, socket address: [185.92.191.233:57400] sockfd: 4
+[2026-11-12 11:29:34.292305] [WARNING] [402507] [TcpServer.hpp] [90] - recv: client quit,[185.92.191.233:57400]
+[2026-11-12 11:29:34.874870] [DEBUG] [402476] [Socket.hpp] [120] - accept success, sockfd:4
+[2026-11-12 11:29:34.875161] [DEBUG] [402476] [TcpServer.hpp] [49] - get a new link, socket address: [185.92.191.233:57714] sockfd: 4
+[2026-11-12 11:29:34.876138] [DEBUG] [402508] [TcpServer.hpp] [94] - recv 178 bytes:
+GET / HTTP/1.1
+Host: 106.15.88.152:8080
+User-Agent: PortScanner-Title/1.0
+Accept: text/html,application/xhtml+xml;q=0.9,*/*;q=0.1
+Accept-Encoding: gzip
+Connection: close
+
+
+[2026-11-12 11:29:34.877118] [DEBUG] [402508] [TcpServer.hpp] [105] - reply 18215 bytes
+[2026-11-12 11:31:34.551021] [DEBUG] [402476] [Socket.hpp] [120] - accept success, sockfd:4
+[2026-11-12 11:31:34.551263] [DEBUG] [402476] [TcpServer.hpp] [49] - get a new link, socket address: [192.248.150.180:47192] sockfd: 4
+[2026-11-12 11:31:34.551975] [DEBUG] [402524] [TcpServer.hpp] [94] - recv 171 bytes:
+GET / HTTP/1.1
+Host: 106.15.88.152:8080
+User-Agent: Mozilla/5.0 (compatible; CyberConvoyScout/1.0; +https://scout.cyberconvoy.co)
+Accept: */*
+Accept-Encoding: gzip
+
+
+[2026-11-12 11:31:34.552620] [DEBUG] [402524] [TcpServer.hpp] [105] - reply 18215 bytes

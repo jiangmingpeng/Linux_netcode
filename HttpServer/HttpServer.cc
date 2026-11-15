@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
     uint16_t server_port = std::stoi(argv[1]);
 
     // Daemon(1, 0); 
-    daemon(0, 0);
+    // daemon(0, 0);
     // LOG -> 文件版日志
     // printf && cout -> /dev/null
 

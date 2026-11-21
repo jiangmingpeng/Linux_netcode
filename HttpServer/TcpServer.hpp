@@ -15,7 +15,7 @@
 
 const static int default_fd = -1;
 const static int default_port = 8888;
-const static int gbacklog = 5; // 服务最大监听数量
+const static int gbacklog = 4; // 服务最大监听数量
 
 using task_t = std::function<void()>;
 using Handler_t = std::function<std::string(std::string &)>; // 用来往上进行回调--大概率使用lamda表达式

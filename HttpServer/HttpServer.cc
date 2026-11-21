@@ -78,8 +78,8 @@ int main(int argc, char *argv[])
         Usage(argv[0]);
         exit(2);
     }
-    ENABLE_FILE_LOG_STRATEGY();
-    // ENABLE_CONSOLE_LOG_STRATEGY();
+    // ENABLE_FILE_LOG_STRATEGY();
+    ENABLE_CONSOLE_LOG_STRATEGY();
     uint16_t server_port = std::stoi(argv[1]);
 
     // Daemon(1, 0); 

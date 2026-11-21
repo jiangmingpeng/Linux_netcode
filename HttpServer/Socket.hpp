@@ -104,22 +104,23 @@ namespace SOCKETMOULD
     public:
         std::shared_ptr<Socket> Accepter(InetAddr &clientaddr)
         {
-            struct sockaddr_in addr;
-            socklen_t len = sizeof(addr);
-            // 获取连接
-            int sockfd = accept(_sockfd,CONV(&addr),&len);
-            // 从已完成连接的队列里取出一个连接，返回一个新的 socket
-            // accept() 返回的是新 socket，和监听 socket 不是同一个 监听 socket 只负责收连接，新 socket 才负责这个连接上的收发
-            // 把地址强转成函数参数需要的形式即可
-            //  收到信息之后进行回显发送回去
-            if (sockfd < 0)
-            {
-                LOG(LogLevel::WARNING) << "accept erro!";
-                return nullptr;
-            }
-            LOG(LogLevel::DEBUG) << "accept success, sockfd:" << sockfd;//由于这里是以多进程为持续获取链接的 所以这里的sockfd是每一个新的网络连接 创建网络文件
-            clientaddr = addr;
-            return std::make_shared<TcpSocket>(sockfd);
+            // struct sockaddr_in addr;
+            // socklen_t len = sizeof(addr);
+            // // 获取连接
+            // int sockfd = accept(_sockfd,CONV(&addr),&len);
+            // // 从已完成连接的队列里取出一个连接，返回一个新的 socket
+            // // accept() 返回的是新 socket，和监听 socket 不是同一个 监听 socket 只负责收连接，新 socket 才负责这个连接上的收发
+            // // 把地址强转成函数参数需要的形式即可
+            // //  收到信息之后进行回显发送回去
+            // if (sockfd < 0)
+            // {
+            //     LOG(LogLevel::WARNING) << "accept erro!";
+            //     return nullptr;
+            // }
+            // LOG(LogLevel::DEBUG) << "accept success, sockfd:" << sockfd;//由于这里是以多进程为持续获取链接的 所以这里的sockfd是每一个新的网络连接 创建网络文件
+            // clientaddr = addr;
+            // return std::make_shared<TcpSocket>(sockfd);
+            return nullptr;
         }
 
         int Sockfd() override

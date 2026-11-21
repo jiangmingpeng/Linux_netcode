@@ -476,3 +476,15 @@ deviceType=1&code=869952055014023&
 [2026-11-15 14:48:31.467636] [DEBUG] [448349] [TcpServer.hpp] [105] - reply 8300 bytes
 [2026-11-15 14:48:33.726203] [DEBUG] [429300] [Socket.hpp] [120] - accept success, sockfd:4
 [2026-11-15 14:48:33.726361] [DEBUG] [429300] [TcpServer.hpp] [49] - get a new link, socket address: [106.7.253.242:24046] sockfd: 4
+[2026-11-16 08:09:36.381521] [INFO] [454899] [Socket.hpp] [78] - 套接字创建成功: 3
+[2026-11-16 08:09:36.382723] [INFO] [454899] [Socket.hpp] [90] - 套接字关联成功: 8080
+[2026-11-16 08:09:36.382874] [INFO] [454899] [Socket.hpp] [101] - listen success...!
+[2026-11-16 08:09:36.382905] [INFO] [454899] [TcpServer.hpp] [32] - create listen socket success: 3
+[2026-11-16 08:10:22.784229] [INFO] [454930] [Socket.hpp] [78] - 套接字创建成功: 3
+[2026-11-16 08:10:22.785187] [INFO] [454930] [Socket.hpp] [90] - 套接字关联成功: 8080
+[2026-11-16 08:10:22.785310] [INFO] [454930] [Socket.hpp] [101] - listen success...!
+[2026-11-16 08:10:22.785343] [INFO] [454930] [TcpServer.hpp] [32] - create listen socket success: 3
+[2026-11-16 08:15:43.900755] [INFO] [455210] [Socket.hpp] [78] - 套接字创建成功: 3
+[2026-11-16 08:15:43.901307] [INFO] [455210] [Socket.hpp] [90] - 套接字关联成功: 8080
+[2026-11-16 08:15:43.901388] [INFO] [455210] [Socket.hpp] [101] - listen success...!
+[2026-11-16 08:15:43.901412] [INFO] [455210] [TcpServer.hpp] [32] - create listen socket success: 3
